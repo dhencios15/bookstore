@@ -6,6 +6,11 @@ import helmet from "helmet";
 import mongoSanitize from "express-mongo-sanitize";
 import xss from "xss-clean";
 
+import AppError from "./utils/app_error.js";
+
+import userRouter from "./routes/user.routes.js";
+import bookRouter from "./routes/book.routes.js";
+
 const app = express();
 
 // MIDDLEWARES
@@ -43,9 +48,8 @@ app.use((req, res, next) => {
 });
 
 // ROUTES
-app.use("/api/v1/users", (req, res) => {
-  res.send("MADAPAKA");
-});
+app.use("/api/v1/users", userRouter);
+app.use("/api/v1/books", bookRouter);
 
 // handle Errors
 app.all("*", (req, res, next) =>
