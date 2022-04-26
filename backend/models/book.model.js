@@ -41,6 +41,14 @@ bookSchema.pre("save", function (next) {
   next();
 });
 
+bookSchema.pre(/^find/, function (next) {
+  this.populate({
+    path: "author",
+    select: "-__v -_id",
+  });
+  next();
+});
+
 const Book = mongoose.model("Book", bookSchema);
 
 export default Book;

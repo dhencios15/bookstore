@@ -10,6 +10,7 @@ import AppError from "./utils/app_error.js";
 
 import userRouter from "./routes/user.routes.js";
 import bookRouter from "./routes/book.routes.js";
+import GlobalErrorHandler from "./controllers/error.controller.js";
 
 const app = express();
 
@@ -55,5 +56,7 @@ app.use("/api/v1/books", bookRouter);
 app.all("*", (req, res, next) =>
   next(new AppError(`Can't find ${req.originalUrl} on this server`, 404))
 );
+
+app.use(GlobalErrorHandler);
 
 export default app;

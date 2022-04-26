@@ -6,7 +6,11 @@ import {
   logout,
   protect,
 } from "../controllers/auth.controller.js";
-import { getAllMyBooks } from "../controllers/user.controller.js";
+import {
+  getAllMyBooks,
+  getMe,
+  getUser,
+} from "../controllers/user.controller.js";
 
 const router = express.Router();
 
@@ -14,6 +18,9 @@ router.post("/signup", signup);
 router.post("/login", login);
 router.get("/logout", logout);
 
-router.get("/my-books", protect, getAllMyBooks);
+router.use(protect);
+
+router.get("/my-books", getAllMyBooks);
+router.get("/me", getMe, getUser);
 
 export default router;

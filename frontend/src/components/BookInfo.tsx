@@ -13,7 +13,7 @@ export const BookInfo = ({ book }: Props) => {
     <Center>
       <Stack align='center'>
         <Title>{book.title}</Title>
-        <Text color='dimmed'>{book.author}</Text>
+        <Text color='dimmed'>{book.author.name}</Text>
         {book.description ? (
           <Text size='lg'>{book.description}</Text>
         ) : (

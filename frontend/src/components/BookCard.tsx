@@ -11,7 +11,7 @@ interface Props {
 
 export const BookCard = ({ book }: Props) => {
   return (
-    <Link href={`/book/${toSlug(book.title)}`} passHref>
+    <Link href={`/book/${book.slug}`} passHref>
       <Paper
         component='a'
         sx={(th) => ({
@@ -28,8 +28,8 @@ export const BookCard = ({ book }: Props) => {
         <Text size='xl' align='center' weight='bold'>
           {book.title}
         </Text>
-        <Text align='center' size='xs' color='dimmed'>
-          {book.author}
+        <Text transform='capitalize' align='center' size='sm' color='dimmed'>
+          {book.author.name}
         </Text>
         <Group align='center' position='center'>
           <Text align='center'>{toPeso(book.price)}</Text>

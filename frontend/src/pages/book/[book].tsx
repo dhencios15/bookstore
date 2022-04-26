@@ -5,11 +5,13 @@ import { ActionIcon, Box, Space } from "@mantine/core";
 import { ChevronLeft } from "tabler-icons-react";
 
 import { books } from "@utils/db";
-import { Book } from "@utils/types";
+import { Book, BookQuery } from "@utils/types";
 import { toSlug } from "@utils/formatter";
 
 import { BookInfo } from "@components/BookInfo";
 import { BookOthers } from "@components/BookOthers";
+import api from "@utils/api";
+import { getCookies } from "cookies-next";
 
 interface Props {
   book: Book;
@@ -26,32 +28,41 @@ export default function BookPage({ book, otherBooks }: Props) {
       <Space h='xl' />
       <BookInfo book={book} />
       <Space h='xl' />
-      <BookOthers author={book.author} books={otherBooks} />
+      <BookOthers author={book.author.name} books={otherBooks} />
     </Box>
   );
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
+  const { token } = getCookies({ req: context.req, res: context.res });
+
   const bookSlug = context.query.book;
 
-  const book = (await books.find(
-    (book) => toSlug(book.title) === String(bookSlug)
-  )) as Book;
+  try {
+    const response = await api.get<BookQuery>("/books", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    const books = await response.data;
 
-  const otherBooksWithSameAuthor = books.filter(
-    (otherBook) => otherBook.id !== book.id && otherBook.author === book.author
-  );
+    const book = books.data.find((book) => book.slug === bookSlug);
 
-  if (!book) {
+    const otherBooks = books.data.filter(
+      (otherBook) =>
+        otherBook.slug !== bookSlug &&
+        otherBook.author.name === book?.author.name
+    );
+
+    return {
+      props: { otherBooks, book },
+    };
+  } catch (error) {
     return {
       redirect: {
         destination: "/",
-        permanent: false,
+        permanent: true,
       },
     };
   }
-
-  return {
-    props: { book, otherBooks: otherBooksWithSameAuthor },
-  };
 };
