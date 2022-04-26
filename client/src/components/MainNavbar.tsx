@@ -14,9 +14,8 @@ import {
   Button,
 } from "@mantine/core";
 import { Logout, Settings, ChevronDown } from "tabler-icons-react";
-import Link from "next/link";
-import { useRouter } from "next/router";
 import { showNotification } from "@mantine/notifications";
+import { Link, NavLink } from "react-router-dom";
 
 const useStyles = createStyles((theme) => ({
   mainSection: {
@@ -68,13 +67,10 @@ const useStyles = createStyles((theme) => ({
 export function MainNavbar() {
   const { classes, cx } = useStyles();
   const [userMenuOpened, setUserMenuOpened] = useState(false);
-  const router = useRouter();
 
   const user = {
     name: "Dhencio",
   };
-
-  const location = router.pathname === "/" ? "/" : router.asPath;
 
   //   const logout = async () => {
   //     try {
@@ -134,7 +130,7 @@ export function MainNavbar() {
           </UnstyledButton>
         }
       >
-        <Link href='/account' passHref>
+        <Link to='/account'>
           <Menu.Item
             sx={(th) => ({ ":hover": { backgroundColor: th.colors.gray[0] } })}
             component='a'
@@ -146,7 +142,7 @@ export function MainNavbar() {
         <Menu.Item icon={<Logout size={14} />}>Logout</Menu.Item>
       </Menu>
     ) : (
-      <Link href='/auth' passHref>
+      <Link to='/auth'>
         <Button component='a' color='green'>
           Login
         </Button>
@@ -159,7 +155,7 @@ export function MainNavbar() {
     <Paper shadow='md' pt='sm'>
       <Container size={1300} className={classes.mainSection}>
         <Group py='sm' position='apart'>
-          <Link href='/' passHref>
+          <NavLink to='/' style={{ textDecoration: "none" }}>
             <Box className={classes.logo}>
               <Title sx={(th) => ({ color: th.colors.cyan[6] })} order={4}>
                 <Text
@@ -175,7 +171,7 @@ export function MainNavbar() {
                 STORE
               </Title>
             </Box>
-          </Link>
+          </NavLink>
           {renderAuthMenu}
         </Group>
       </Container>

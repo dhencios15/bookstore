@@ -1,7 +1,7 @@
 import React from "react";
 import { Box, SimpleGrid, Space, Text } from "@mantine/core";
 
-import { Book } from "@utils/types";
+import { Book } from "../utils/types";
 
 import { BookCard } from "./BookCard";
 

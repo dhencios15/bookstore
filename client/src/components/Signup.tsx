@@ -8,10 +8,8 @@ import {
   TextInput,
 } from "@mantine/core";
 import { useForm, zodResolver } from "@mantine/form";
-import { useRouter } from "next/router";
 import { z } from "zod";
-import api from "@utils/api";
-import { setCookies } from "cookies-next";
+import api from "../utils/api";
 
 const schema = z
   .object({
@@ -30,8 +28,6 @@ const schema = z
 export type SignupFormType = z.infer<typeof schema>;
 
 export const Signup = () => {
-  const router = useRouter();
-
   const form = useForm<SignupFormType>({
     schema: zodResolver(schema),
     initialValues: {
@@ -45,33 +41,33 @@ export const Signup = () => {
   const [error, setError] = React.useState(null);
   const [isLoading, setIsLoading] = React.useState(false);
 
-  const onSignup = async (data: SignupFormType) => {
-    const { email, name, password, password_confirm } = data;
+  // const onSignup = async (data: SignupFormType) => {
+  //   const { email, name, password, password_confirm } = data;
 
-    setIsLoading(true);
-    try {
-      const response = await api.post("/users/signup", {
-        email,
-        name,
-        password,
-        passwordConfirm: password_confirm,
-      });
-      const user = await response.data;
-      setCookies("token", user.token, { httpOnly: true });
+  //   setIsLoading(true);
+  //   try {
+  //     const response = await api.post("/users/signup", {
+  //       email,
+  //       name,
+  //       password,
+  //       passwordConfirm: password_confirm,
+  //     });
+  //     const user = await response.data;
+  //     setCookies("token", user.token, { httpOnly: true });
 
-      const location = router.pathname === "/auth" ? "/" : router.asPath;
-      router.push(location);
-    } catch (error: any) {
-      console.log(error.response.data.message);
-      setError(error.response.data.message);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  //     const location = router.pathname === "/auth" ? "/" : router.asPath;
+  //     router.push(location);
+  //   } catch (error: any) {
+  //     console.log(error.response.data.message);
+  //     setError(error.response.data.message);
+  //   } finally {
+  //     setIsLoading(false);
+  //   }
+  // };
 
   return (
     <Paper
-      onSubmit={form.onSubmit(onSignup)}
+      // onSubmit={form.onSubmit(onSignup)}
       component='form'
       withBorder
       shadow='md'

@@ -1,9 +1,9 @@
 import React from "react";
-import Link from "next/link";
 import { Group, Paper, Text } from "@mantine/core";
+import { Link } from "react-router-dom";
 
-import { Book } from "@utils/types";
-import { toPeso, toSlug, toStocks } from "@utils/formatter";
+import { Book } from "../utils/types";
+import { toPeso, toSlug, toStocks } from "../utils/formatter";
 
 interface Props {
   book: Book;
@@ -11,9 +11,8 @@ interface Props {
 
 export const BookCard = ({ book }: Props) => {
   return (
-    <Link href={`/book/${book.slug}`} passHref>
+    <Link to={`/book/${toSlug(book.title)}`} style={{ textDecoration: "none" }}>
       <Paper
-        component='a'
         sx={(th) => ({
           transition: "all .2s ease-in-out",
           ":hover": {
@@ -25,15 +24,23 @@ export const BookCard = ({ book }: Props) => {
         radius='md'
         shadow='sm'
       >
-        <Text size='xl' align='center' weight='bold'>
+        <Text component='h1' size='xl' align='center' weight='bold'>
           {book.title}
         </Text>
-        <Text transform='capitalize' align='center' size='sm' color='dimmed'>
-          {book.author.name}
+        <Text
+          component='p'
+          transform='capitalize'
+          align='center'
+          size='sm'
+          color='dimmed'
+        >
+          {book.author}
         </Text>
         <Group align='center' position='center'>
-          <Text align='center'>{toPeso(book.price)}</Text>
-          <Text align='center' size='sm' color='dimmed'>
+          <Text component='span' align='center'>
+            {toPeso(book.price)}
+          </Text>
+          <Text component='span' align='center' size='sm' color='dimmed'>
             {toStocks(book.stock)}
           </Text>
         </Group>

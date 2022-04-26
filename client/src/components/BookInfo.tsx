@@ -1,8 +1,8 @@
 import React from "react";
 import { Center, Group, Stack, Text, Title } from "@mantine/core";
 
-import { toPeso, toStocks } from "@utils/formatter";
-import { Book } from "@utils/types";
+import { toPeso, toStocks } from "../utils/formatter";
+import { Book } from "../utils/types";
 
 interface Props {
   book: Book;

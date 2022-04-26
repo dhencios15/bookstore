@@ -1,14 +1,10 @@
 import React from "react";
-import { GetServerSideProps } from "next";
-import { getCookies } from "cookies-next";
 import { Anchor, Text, Container } from "@mantine/core";
 
-import api from "@utils/api";
+import { Signin } from "../components/Signin";
+import { Signup } from "../components/Signup";
 
-import { Signin } from "@components/Signin";
-import { Signup } from "@components/Signup";
-
-export default function AuthPage() {
+export const Auth = () => {
   const [authType, setAuthType] = React.useState<"signin" | "signup">("signin");
 
   const isSignin = authType === "signin";
@@ -42,30 +38,4 @@ export default function AuthPage() {
       {isSignin ? <Signin /> : <Signup />}
     </Container>
   );
-}
-
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const { token } = getCookies({ req: context.req, res: context.res });
-
-  try {
-    await api.get("/users/me", {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-
-    return {
-      redirect: {
-        destination: "/",
-        permanent: true,
-      },
-    };
-  } catch (error) {
-    return {
-      redirect: {
-        destination: "/auth",
-        permanent: true,
-      },
-    };
-  }
 };

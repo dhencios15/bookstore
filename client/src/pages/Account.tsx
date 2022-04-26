@@ -1,4 +1,4 @@
-import { BookCard } from "@components/BookCard";
+import { BookCard } from "../components/BookCard";
 import {
   Avatar,
   Box,
@@ -10,13 +10,14 @@ import {
   Stack,
   Text,
 } from "@mantine/core";
-import { books } from "@utils/db";
+import { books } from "../utils/db";
 import React from "react";
 import { Plus } from "tabler-icons-react";
+import { Layout } from "../components/Layout";
 
-export default function AccountPage() {
+export const Account = () => {
   return (
-    <Box>
+    <Layout>
       <Paper
         mb='xl'
         p='xl'
@@ -58,6 +59,6 @@ export default function AccountPage() {
           <BookCard key={book.id} book={book} />
         ))}
       </SimpleGrid>
-    </Box>
+    </Layout>
   );
-}
+};

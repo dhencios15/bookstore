@@ -1,11 +1,11 @@
 export type Book = {
-  _id: string;
+  id: string;
   title: string;
-  author: Author;
+  author: string;
   description?: string;
   price: number;
   stock: number;
-  slug: string;
+  slug?: string;
 };
 
 export type Author = {
