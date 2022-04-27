@@ -27,7 +27,11 @@ const schema = z
 
 export type SignupFormType = z.infer<typeof schema>;
 
-export const Signup = () => {
+interface Props {
+  from: string;
+}
+
+export const Signup = ({ from }: Props) => {
   const form = useForm<SignupFormType>({
     schema: zodResolver(schema),
     initialValues: {
