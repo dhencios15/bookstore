@@ -103,7 +103,7 @@ export function MainNavbar() {
           >
             <Group spacing={7}>
               <Avatar
-                src='https://robohash.org/eda'
+                src={`https://robohash.org/${user?.name}`}
                 alt='user avatay'
                 radius='xl'
                 size={20}
