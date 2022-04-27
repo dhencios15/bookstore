@@ -1,7 +1,5 @@
-import { BookCard } from "../components/BookCard";
 import {
   Avatar,
-  Box,
   Button,
   Group,
   Paper,
@@ -10,15 +8,19 @@ import {
   Stack,
   Text,
 } from "@mantine/core";
-import { books } from "../utils/db";
-import React from "react";
 import { Plus } from "tabler-icons-react";
-import { Layout } from "../components/Layout";
+
 import { useUser } from "../hooks/store/useUser";
 import { getYearDate } from "../utils/formatter";
+import { useMyBooks } from "../hooks/useBooks";
+
+import { BookCard } from "../components/BookCard";
+import { Layout } from "../components/Layout";
+import { CardSkeleton } from "../components/CardSkeleton";
 
 export const Account = () => {
   const user = useUser((state) => state.user);
+  const myBooksQuery = useMyBooks();
 
   return (
     <Layout>
@@ -52,19 +54,25 @@ export const Account = () => {
         </Button>
       </Group>
       <Space h='xl' />
-      <SimpleGrid
-        spacing='lg'
-        cols={4}
-        breakpoints={[
-          { maxWidth: "md", cols: 3, spacing: "md" },
-          { maxWidth: "sm", cols: 2, spacing: "sm" },
-          { maxWidth: "xs", cols: 1, spacing: "sm" },
-        ]}
-      >
-        {books.map((book) => (
-          <BookCard key={book.id} book={book} />
-        ))}
-      </SimpleGrid>
+      {myBooksQuery.isLoading ? (
+        <CardSkeleton numOfCards={4} />
+      ) : (
+        <>
+          <SimpleGrid
+            spacing='lg'
+            cols={4}
+            breakpoints={[
+              { maxWidth: "md", cols: 3, spacing: "md" },
+              { maxWidth: "sm", cols: 2, spacing: "sm" },
+              { maxWidth: "xs", cols: 1, spacing: "sm" },
+            ]}
+          >
+            {myBooksQuery.data?.data.map((book) => (
+              <BookCard key={book._id} book={book} />
+            ))}
+          </SimpleGrid>
+        </>
+      )}
     </Layout>
   );
 };

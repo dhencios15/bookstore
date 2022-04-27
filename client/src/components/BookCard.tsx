@@ -11,7 +11,7 @@ interface Props {
 
 export const BookCard = ({ book }: Props) => {
   return (
-    <Link to={`/book/${toSlug(book.title)}`} style={{ textDecoration: "none" }}>
+    <Link to={`/book/${book.slug}`} style={{ textDecoration: "none" }}>
       <Paper
         sx={(th) => ({
           transition: "all .2s ease-in-out",
@@ -34,7 +34,7 @@ export const BookCard = ({ book }: Props) => {
           size='sm'
           color='dimmed'
         >
-          {book.author}
+          {book.author.name}
         </Text>
         <Group align='center' position='center'>
           <Text component='span' align='center'>
