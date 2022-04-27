@@ -27,7 +27,13 @@ export type Paginate = {
 };
 
 export type BookQuery = Paginate & { data: Book[] };
-
+export type User = {
+  _id: string;
+  name: string;
+  email: string;
+  createdAt: string;
+  updatedAt: string;
+};
 // "total_items": 2,
 // "limit": 10,
 // "totalPages": 1,

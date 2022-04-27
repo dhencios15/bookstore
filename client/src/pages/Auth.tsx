@@ -4,19 +4,21 @@ import { Anchor, Text, Container } from "@mantine/core";
 import { Signin } from "../components/Signin";
 import { Signup } from "../components/Signup";
 import { Navigate, useLocation, useNavigate } from "react-router-dom";
+import { useMe } from "../hooks/useMe";
+import { useUser } from "../hooks/store/useUser";
 
 export const Auth = () => {
+  const user = useUser((state) => state.user);
+
   const [authType, setAuthType] = React.useState<"signin" | "signup">("signin");
-  const navigate = useNavigate();
   const location = useLocation();
-  const auth = { user: "helo" };
 
   //@ts-ignore
   const from = location.state?.from?.pathname || "/";
 
   const isSignin = authType === "signin";
 
-  if (auth.user) {
+  if (user) {
     return <Navigate to='/' replace />;
   }
 

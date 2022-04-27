@@ -1,8 +1,8 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+
 import { Account } from "./pages/Account";
 import { Auth } from "./pages/Auth";
 import { BookInformation } from "./pages/BookInformation";
-
 import { Home } from "./pages/Home";
 
 function App() {

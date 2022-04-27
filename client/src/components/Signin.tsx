@@ -9,7 +9,12 @@ import {
 } from "@mantine/core";
 import { useForm, zodResolver } from "@mantine/form";
 import { z } from "zod";
+import cookie from "js-cookie";
+
 import api from "../utils/api";
+import { useNavigate } from "react-router-dom";
+import { useQueryClient } from "react-query";
+import { useUser } from "../hooks/store/useUser";
 
 const schema = z.object({
   email: z.string().email({ message: "Invalid email" }),
@@ -23,6 +28,9 @@ interface Props {
 }
 
 export const Signin = ({ from }: Props) => {
+  const navigate = useNavigate();
+  const setUser = useUser((state) => state.setUser);
+  const queryClient = useQueryClient();
   const form = useForm<SigninFormType>({
     schema: zodResolver(schema),
     initialValues: {
@@ -34,31 +42,31 @@ export const Signin = ({ from }: Props) => {
   const [error, setError] = React.useState(null);
   const [isLoading, setIsLoading] = React.useState(false);
 
-  // const onSignup = async (data: SigninFormType) => {
-  //   const { email, password } = data;
-  //   setIsLoading(true);
-  //   try {
-  //     const response = await api.post("users/login", {
-  //       email,
-  //       password,
-  //     });
+  const onSignup = async (data: SigninFormType) => {
+    const { email, password } = data;
+    setIsLoading(true);
+    try {
+      const response = await api.post("users/login", {
+        email,
+        password,
+      });
 
-  //     const user = await response.data;
-  //     setCookies("token", user.token, { httpOnly: true });
-
-  //     const location = router.pathname === "/auth" ? "/" : router.asPath;
-  //     router.push(location);
-  //   } catch (error: any) {
-  //     console.log(error.response);
-  //     setError(error.response.data.message);
-  //   } finally {
-  //     setIsLoading(false);
-  //   }
-  // };
+      const user = await response.data;
+      setUser(user.data.user);
+      cookie.set("token", user.token);
+      navigate(from, { replace: true });
+      queryClient.invalidateQueries(["me"]);
+    } catch (error: any) {
+      console.log(error.response);
+      setError(error.response.data.message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <Paper
-      // onSubmit={form.onSubmit(onSignup)}
+      onSubmit={form.onSubmit(onSignup)}
       component='form'
       withBorder
       shadow='md'
