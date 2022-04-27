@@ -1,4 +1,5 @@
 import { Navigate, useLocation } from "react-router-dom";
+
 import { useUser } from "../hooks/store/useUser";
 
 export const RequiredAuth = ({ children }: { children: JSX.Element }) => {

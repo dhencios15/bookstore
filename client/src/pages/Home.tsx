@@ -5,10 +5,13 @@ import { useBooks } from "../hooks/useBooks";
 import { BookCard } from "../components/BookCard";
 import { CardSkeleton } from "../components/CardSkeleton";
 import { Layout } from "../components/Layout";
+import React from "react";
 
 export const Home = () => {
-  const booksQuery = useBooks();
+  const [activePage, setPage] = React.useState(1);
 
+  const booksQuery = useBooks(activePage);
+  console.log(activePage);
   return (
     <Layout>
       {booksQuery.isLoading ? (
@@ -30,6 +33,7 @@ export const Home = () => {
           </SimpleGrid>
           <Center mt='xl'>
             <Pagination
+              onChange={setPage}
               page={booksQuery.data?.page}
               total={booksQuery.data?.totalPages || 1}
             />

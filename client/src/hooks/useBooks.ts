@@ -2,12 +2,17 @@ import { useQuery } from "react-query";
 import api from "../utils/api";
 import { BookQuery } from "../utils/types";
 
-const getBooks = async () => {
-  const { data } = await api.get<BookQuery>("/books");
+const getBooks = async (page: number) => {
+  const { data } = await api.get<BookQuery>("/books", {
+    params: {
+      page,
+      limit: 12,
+    },
+  });
   return data;
 };
 
-const getNyBooks = async () => {
+const getMyBooks = async () => {
   const { data } = await api.get<BookQuery>("/users/my-books");
   return data;
 };
@@ -17,5 +22,9 @@ const getBook = async (slug: string) => {
   return data;
 };
 
-export const useBooks = () => useQuery(["books"], getBooks);
-export const useMyBooks = () => useQuery(["my-books"], getNyBooks);
+export const useBooks = (page: number) =>
+  useQuery(["books", page], () => getBooks(page), {
+    enabled: !!page,
+  });
+
+export const useMyBooks = () => useQuery(["my-books"], getMyBooks);

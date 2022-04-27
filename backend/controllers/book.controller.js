@@ -25,3 +25,42 @@ export const createBook = catchAsync(async (req, res, next) => {
     data: newBook,
   });
 });
+
+export const getBook = catchAsync(async (req, res, next) => {
+  const { slug } = req.params;
+  const book = await Book.findOne({ slug });
+
+  if (!book) return next(new AppError(`${slug} Book not Found`, 404));
+
+  res.status(200).json({
+    success: true,
+    data: book,
+  });
+});
+
+export const updateBook = catchAsync(async (req, res, next) => {
+  const { slug } = req.params;
+  const book = await Book.findOneAndUpdate({ slug }, req.body, {
+    new: true,
+    runValidators: true,
+  });
+
+  if (!book) return next(new AppError(`${slug} Book not Found`, 404));
+
+  res.status(201).json({
+    success: true,
+    data: book,
+  });
+});
+
+export const deleteBook = catchAsync(async (req, res, next) => {
+  const { slug } = req.params;
+  const book = await Book.findOneAndDelete({ slug });
+
+  if (!book) return next(new AppError(`${slug} Book not Found`, 404));
+
+  res.status(200).json({
+    success: true,
+    message: "Book Deleted",
+  });
+});

@@ -5,7 +5,7 @@ export type Book = {
   description?: string;
   price: number;
   stock: number;
-  slug?: string;
+  slug: string;
 };
 
 export type Author = {

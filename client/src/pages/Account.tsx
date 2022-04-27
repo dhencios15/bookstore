@@ -17,10 +17,20 @@ import { useMyBooks } from "../hooks/useBooks";
 import { BookCard } from "../components/BookCard";
 import { Layout } from "../components/Layout";
 import { CardSkeleton } from "../components/CardSkeleton";
+import { useModals } from "@mantine/modals";
 
 export const Account = () => {
   const user = useUser((state) => state.user);
   const myBooksQuery = useMyBooks();
+  const modals = useModals();
+
+  const openCreateBook = () =>
+    modals.openContextModal("createbook", {
+      title: "Create Book",
+      innerProps: {
+        state: "Create",
+      },
+    });
 
   return (
     <Layout>
@@ -49,7 +59,11 @@ export const Account = () => {
         <Text weight='bold' size='lg'>
           MY BOOKS
         </Text>
-        <Button leftIcon={<Plus size={16} />} size='xs'>
+        <Button
+          onClick={openCreateBook}
+          leftIcon={<Plus size={16} />}
+          size='xs'
+        >
           CREATE BOOK
         </Button>
       </Group>
@@ -68,7 +82,7 @@ export const Account = () => {
             ]}
           >
             {myBooksQuery.data?.data.map((book) => (
-              <BookCard key={book._id} book={book} />
+              <BookCard isManipulate={true} key={book._id} book={book} />
             ))}
           </SimpleGrid>
         </>
