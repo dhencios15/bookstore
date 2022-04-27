@@ -30,7 +30,6 @@ interface Props {
 export const Signin = ({ from }: Props) => {
   const navigate = useNavigate();
   const setUser = useUser((state) => state.setUser);
-  const queryClient = useQueryClient();
   const form = useForm<SigninFormType>({
     schema: zodResolver(schema),
     initialValues: {
@@ -54,8 +53,10 @@ export const Signin = ({ from }: Props) => {
       const user = await response.data;
       setUser(user.data.user);
       cookie.set("token", user.token);
+      api.defaults.headers.common = {
+        Authorization: `Bearer ${user.token}`,
+      };
       navigate(from, { replace: true });
-      queryClient.invalidateQueries(["me"]);
     } catch (error: any) {
       console.log(error.response);
       setError(error.response.data.message);

@@ -7,9 +7,13 @@ import {
   Text,
   TextInput,
 } from "@mantine/core";
+import { useNavigate } from "react-router-dom";
 import { useForm, zodResolver } from "@mantine/form";
 import { z } from "zod";
+import cookie from "js-cookie";
+
 import api from "../utils/api";
+import { useUser } from "../hooks/store/useUser";
 
 const schema = z
   .object({
@@ -32,6 +36,9 @@ interface Props {
 }
 
 export const Signup = ({ from }: Props) => {
+  const navigate = useNavigate();
+  const setUser = useUser((state) => state.setUser);
+
   const form = useForm<SignupFormType>({
     schema: zodResolver(schema),
     initialValues: {
@@ -45,33 +52,35 @@ export const Signup = ({ from }: Props) => {
   const [error, setError] = React.useState(null);
   const [isLoading, setIsLoading] = React.useState(false);
 
-  // const onSignup = async (data: SignupFormType) => {
-  //   const { email, name, password, password_confirm } = data;
+  const onSignup = async (data: SignupFormType) => {
+    const { email, name, password, password_confirm } = data;
 
-  //   setIsLoading(true);
-  //   try {
-  //     const response = await api.post("/users/signup", {
-  //       email,
-  //       name,
-  //       password,
-  //       passwordConfirm: password_confirm,
-  //     });
-  //     const user = await response.data;
-  //     setCookies("token", user.token, { httpOnly: true });
-
-  //     const location = router.pathname === "/auth" ? "/" : router.asPath;
-  //     router.push(location);
-  //   } catch (error: any) {
-  //     console.log(error.response.data.message);
-  //     setError(error.response.data.message);
-  //   } finally {
-  //     setIsLoading(false);
-  //   }
-  // };
+    setIsLoading(true);
+    try {
+      const response = await api.post("/users/signup", {
+        email,
+        name,
+        password,
+        passwordConfirm: password_confirm,
+      });
+      const user = await response.data;
+      setUser(user.data.user);
+      cookie.set("token", user.token);
+      api.defaults.headers.common = {
+        Authorization: `Bearer ${user.token}`,
+      };
+      navigate(from, { replace: true });
+    } catch (error: any) {
+      console.log(error.response.data.message);
+      setError(error.response.data.message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <Paper
-      // onSubmit={form.onSubmit(onSignup)}
+      onSubmit={form.onSubmit(onSignup)}
       component='form'
       withBorder
       shadow='md'

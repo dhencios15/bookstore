@@ -1,8 +1,6 @@
 import axios from "axios";
 import cookie from "js-cookie";
 
-const token = cookie.get("token");
-
 const api = axios.create({
   baseURL: `http://localhost:1234/api/v1`,
   headers: {
@@ -11,6 +9,8 @@ const api = axios.create({
 });
 
 api.interceptors.request.use((config) => {
+  const token = cookie.get("token");
+
   // @ts-ignore
   config.headers = {
     Authorization: `Bearer ${token}`,
