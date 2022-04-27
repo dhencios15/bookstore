@@ -44,7 +44,7 @@ bookSchema.pre("save", function (next) {
 bookSchema.pre(/^find/, function (next) {
   this.populate({
     path: "author",
-    select: "-__v -_id",
+    select: "-__v",
   });
   next();
 });

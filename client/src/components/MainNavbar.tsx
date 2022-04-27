@@ -17,6 +17,7 @@ import { Logout, Settings, ChevronDown } from "tabler-icons-react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { useUser } from "../hooks/store/useUser";
 import api from "../utils/api";
+import { useQueryClient } from "react-query";
 
 const useStyles = createStyles((theme) => ({
   mainSection: {
@@ -68,6 +69,7 @@ const useStyles = createStyles((theme) => ({
 export function MainNavbar() {
   const navigate = useNavigate();
   const user = useUser((state) => state.user);
+  const queryClient = useQueryClient();
   const setUser = useUser((state) => state.setUser);
   const { classes, cx } = useStyles();
   const [userMenuOpened, setUserMenuOpened] = useState(false);
@@ -77,6 +79,7 @@ export function MainNavbar() {
       await api.get("/users/logout");
       setUser(null);
       cookie.remove("token");
+      queryClient.removeQueries(["my-books"]);
     } catch (error) {
       console.log(error);
     } finally {

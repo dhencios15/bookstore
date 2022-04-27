@@ -9,6 +9,7 @@ export type Book = {
 };
 
 export type Author = {
+  _id: string;
   name: string;
   email: string;
 };
@@ -23,10 +24,14 @@ export type Paginate = {
   hasNextPage: boolean;
   prevPage?: number | null;
   nextPage?: number | null;
-  success: boolean;
+  success: string;
 };
 
 export type BookQuery = Paginate & { data: Book[] };
+export type BookSingleQuery = {
+  success: string;
+  data: Book;
+};
 export type User = {
   _id: string;
   name: string;

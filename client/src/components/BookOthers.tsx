@@ -19,7 +19,7 @@ export const BookOthers = ({ author, books }: Props) => {
       <Space h='xl' />
       <SimpleGrid spacing='lg' cols={4}>
         {books.map((book) => (
-          <BookCard key={book.id} book={book} />
+          <BookCard key={book._id} book={book} />
         ))}
       </SimpleGrid>
     </Box>
