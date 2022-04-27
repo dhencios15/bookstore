@@ -14,8 +14,12 @@ import { books } from "../utils/db";
 import React from "react";
 import { Plus } from "tabler-icons-react";
 import { Layout } from "../components/Layout";
+import { useUser } from "../hooks/store/useUser";
+import { getYearDate } from "../utils/formatter";
 
 export const Account = () => {
+  const user = useUser((state) => state.user);
+
   return (
     <Layout>
       <Paper
@@ -26,12 +30,14 @@ export const Account = () => {
         sx={{ width: "max-content" }}
       >
         <Group>
-          <Avatar size='xl' src='https://robohash.org/dhencio' />
+          <Avatar size='xl' src={`https://robohash.org/${user?.name}`} />
           <Stack spacing='xs'>
-            <Text weight='bold'>Dhencio</Text>
-            <Text>denysdon15@gmail.com</Text>
+            <Text weight='bold' transform='capitalize'>
+              {user?.name}
+            </Text>
+            <Text>{user?.email}</Text>
             <Text size='sm' color='dimmed'>
-              member since 2010
+              member since {getYearDate(`${user?.createdAt}`)}
             </Text>
           </Stack>
         </Group>

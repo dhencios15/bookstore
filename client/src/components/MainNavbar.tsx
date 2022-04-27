@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import cookie from "js-cookie";
 import {
   createStyles,
   Container,
@@ -9,13 +10,13 @@ import {
   Paper,
   Title,
   Box,
-  Image,
   Avatar,
   Button,
 } from "@mantine/core";
 import { Logout, Settings, ChevronDown } from "tabler-icons-react";
-import { showNotification } from "@mantine/notifications";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
+import { useUser } from "../hooks/store/useUser";
+import api from "../utils/api";
 
 const useStyles = createStyles((theme) => ({
   mainSection: {
@@ -65,35 +66,23 @@ const useStyles = createStyles((theme) => ({
 }));
 
 export function MainNavbar() {
+  const navigate = useNavigate();
+  const user = useUser((state) => state.user);
+  const setUser = useUser((state) => state.setUser);
   const { classes, cx } = useStyles();
   const [userMenuOpened, setUserMenuOpened] = useState(false);
 
-  const user = {
-    name: "Dhencio",
+  const logout = async () => {
+    try {
+      await api.get("/users/logout");
+      setUser(null);
+      cookie.remove("token");
+    } catch (error) {
+      console.log(error);
+    } finally {
+      navigate("/auth");
+    }
   };
-
-  //   const logout = async () => {
-  //     try {
-  //       await axios.get("/api/signout");
-  //       queryClient.removeQueries(["me"], { exact: true });
-  //       dispatch(clearUser());
-  //       showNotification({
-  //         title: "BYE BYE 👋",
-  //         message: `Thanks for the visit`,
-  //         color: "green",
-  //         autoClose: 1000,
-  //       });
-  //     } catch (error) {
-  //       showNotification({
-  //         title: "Oh Noh! ⚠",
-  //         message: `Something went wrong`,
-  //         color: "red",
-  //       });
-  //     } finally {
-  //       router.push(location);
-  //       queryClient.invalidateQueries(["me"], { exact: true });
-  //     }
-  //   };
 
   const renderAuthMenu = React.useMemo(() => {
     return Boolean(user) ? (
@@ -139,7 +128,9 @@ export function MainNavbar() {
             Account
           </Menu.Item>
         </Link>
-        <Menu.Item icon={<Logout size={14} />}>Logout</Menu.Item>
+        <Menu.Item onClick={logout} icon={<Logout size={14} />}>
+          Logout
+        </Menu.Item>
       </Menu>
     ) : (
       <Link to='/auth'>
