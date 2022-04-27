@@ -9,6 +9,7 @@
 ## FRAMEWORK/LIBRARIES/TOOLS 🎉
 
 - [Vite](https://vitejs.dev/) - Next Generation Frontend Tooling
+- [React](https://reactjs.org/) - A JavaScript library for building user interfaces
 - [Mantine UI](https://mantine.dev/) - Reactjs UI Framework
 - [React Query](https://react-query.tanstack.com/) - React Fetching Libraray (Server State)
 - [Zustand](https://github.com/pmndrs/zustand) - State Management
