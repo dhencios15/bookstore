@@ -8,8 +8,8 @@
 
 ## FRAMEWORK/LIBRARIES/TOOLS 🎉
 
-- [Nextjs](https://nextjs.org/) - Reactjs Framework
+- [Vite](https://vitejs.dev/) - Next Generation Frontend Tooling
 - [Mantine UI](https://mantine.dev/) - Reactjs UI Framework
 - [React Query](https://react-query.tanstack.com/) - React Fetching Libraray (Server State)
-- [Redux Toolkit](https://redux-toolkit.js.org/) - Redux Library (Client State)
+- [Zustand](https://github.com/pmndrs/zustand) - State Management
 - [Typescript](https://www.typescriptlang.org/) - JavaScript with syntax for types
